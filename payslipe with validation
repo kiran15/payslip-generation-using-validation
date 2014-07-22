@@ -1,0 +1,512 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <meta charset="utf-8">
+  <title>payslip</title>
+  <link rel="stylesheet" href="css/normalize.css">
+  <link rel="stylesheet" href="css/style.css">
+</head>
+<body>
+  <script type="text/x-handlebars">
+  {{outlet}}
+  </script>
+
+  <!-- INDEX PAGE  -->
+
+  <script type="text/x-handlebars" data-template-name="index">
+
+  <table border="0">
+  <tr>
+  <td colspan="2" align="center"><h3>Employee Details</h2></td>
+  </tr>
+  <tr>
+  <td width="35%">Fullname*</td>
+  <td>{{input type="text" value=fullname required="true"}}</td>
+  </tr>
+  <tr>
+  <td>Userid*</td>
+  <td>{{input type="text" value=userid}}</td>
+  </tr>
+  <tr>
+  <td>Designation*</td>
+  <td>{{input type="text" value=desgnation}}</td>
+  </tr>
+  <tr>
+  <td>Salary*</td>
+  <td>{{input type="text" value=salary}}</td>
+  </tr>
+
+  <td colspan="2"> &nbsp; </td>
+  </tr>
+  <tr>
+  <td colspan="2" align="center"><button {{action "submitAction"}}>Submit</button></td>
+  </tr>
+  </table>    
+  </script>
+
+  <!-- cOMFIRMATION PAGE  -->
+
+  <script type="text/x-handlebars" data-template-name="comfirmation">
+  <div id="">
+
+
+  {{#link-to 'index'}}Back To home{{/link-to}}
+  <table border="1" style="border:2px;">
+  <tr>
+  <th>id</th>
+  <th>Name</th>
+  <th>userid</th>
+  <th>designation</th>
+  <th>salary</th>
+  <th>pf</th>
+  <th>gross</th>
+  <th>payList</th>
+  <th>editList</th>
+
+  </tr>
+  {{#each}}
+  <tr>
+  <td>{{id}}</td>
+  <td>{{fullname}}</td>
+  <td>{{userid}}</td>
+  <td>{{desgnation}}</td>
+  <td>{{salary}}</td>
+  <td>{{pf}}</td>
+  <td>{{gross}}</td>
+
+  <td>{{#link-to "information" this}}<button>payslip</button>{{/link-to}}</td>
+  <td>{{#link-to "edit" this}}<button>edit</button>{{/link-to}}</td>
+
+  </tr>
+  {{/each}}
+  </table>
+
+  </div>
+
+  </script>
+
+  <script type="text/x-handlebars" data-template-name="information">
+  <div>
+  <h3>Payslip</h3>
+  <table border="0" class="PaySlip">
+
+  <tr>
+  <td width="30%"><b>FullName:</b> </td>
+  <td>{{fullname}}</td>
+  </tr>
+  <tr>
+  <td><b>UserId:</b> </td>
+  <td>{{userid}}</td>
+  </tr>
+  <tr>
+  <td><b>Desgnation:</b> </td>
+  <td>{{desgnation}}</td>
+  </tr>
+  <tr>
+  <td><b>Salary:</b> </td>
+  <td>{{salary}}</td>
+  </tr>
+  <tr>
+  <td><b>PF: </b></td>
+  <td>{{pf}}</td>
+  </tr>
+  <tr>
+  <td><b>Gross:</b></td>
+  <td>{{gross}}</td>
+  </tr>
+  <tr>
+  <td colspan="2" align="right"> 
+  <button {{action "informationAction" id}}>Exit</button>
+  </td>
+  </tr>
+  </table>
+  </div>
+  </script>
+  <script type="text/x-handlebars" data-template-name="edit">
+  <table border="0">
+  <tr>
+  <td colspan="2" align="center"><h3>Employee Details</h2></td>
+  </tr>
+  <tr>
+  <td width="35%">fullname*</td>
+  <td>{{input type="text" value=fullname required="true"}}</td>
+  </tr>
+  <tr>
+  <td>userid*</td>
+  <td>{{input type="text" value=userid}}</td>
+  </tr>
+  <tr>
+  <td>designation*</td>
+  <td>{{input type="text" value=desgnation}}</td>
+  </tr>
+  <tr>
+  <td>salary*</td>
+  <td>{{input type="text" value=salary}}</td>
+  </tr>
+
+
+  <td colspan="2"> &nbsp; </td>
+  </tr>
+  <tr>
+  <td colspan="2" align="center"><button {{action "update"}}>update</button></td>
+  </tr>
+
+  </table> 
+  </script>
+
+  <script src="js/libs/jquery-1.10.2.js"></script>
+  <script src="js/libs/handlebars-1.1.2.js"></script>
+  <script src="js/libs/ember-1.5.1.js"></script>
+  <script src="js/libs/ember-data.js"></script>
+  <!--<script src="js/localstorage_adapter.js"></script>-->
+  <script src="js/application.js"></script>
+  <script src="js/router.js"></script>
+  <script src="js/app.js"></script>
+  <script src="js/router.js"></script>
+  <script src="js/model/model.js"></script>
+
+
+
+  <!-- to activate the test runner, add the "?test" query string parameter -->
+  <!-- <script src="tests/runner.js"></script>-->
+</body>
+</html>
+
+
+
+
+
+
+window.App = Ember.Application.create();
+
+App.ApplicationAdapter = DS.FixtureAdapter.extend();
+
+
+
+
+App.IndexController = Ember.ArrayController.extend({
+    fullname: '',
+    userid: '',
+    desgnation: '',
+    salary: '',
+    error: false,
+
+
+
+    actions: {
+        submitAction: function() {
+
+            if (this.get('fullname').length == 0) {
+
+                alert('Enter the value of fullname');
+                return false;
+
+            } else if ((this.get('fullname').length < 3)) {
+
+                alert('Enter the value more than 3 charcter of fullname');
+
+
+                return false;
+            } else if ($.isNumeric(this.get('fullname'))) {
+
+
+                alert('Enter the charcters of fullname');
+
+                return false;
+            } else if (this.get('userid').length == 0) {
+
+                alert('Enter the numbers of userid');
+                return false;
+            } else if ((this.get('userid').length < 1)) {
+
+                alert('Enter the value more than 2 number of userid');
+
+                return false;
+            } else if (!$.isNumeric(this.get('userid'))) {
+
+                alert('Enter the number in userid');
+
+                return false;
+            } else if (this.get('desgnation').length == 0) {
+
+                alert('Enter the value of designation');
+                return false;
+
+            } else if ((this.get('desgnation').length < 3)) {
+
+                alert('Enter the value more than 3 charcter of designation');
+                return false;
+            } else if ($.isNumeric(this.get('desgnation'))) {
+
+
+                alert('Enter the charcter of desgnation');
+
+                return false;
+            } else if (this.get('salary').length == 0) {
+
+                alert('Enter the number of salary');
+                return false;
+            } else if ((this.get('salary').length < 2)) {
+
+                alert('Enter the value more than 2 number of salary');
+                return false;
+
+            } else if (!$.isNumeric(this.get('salary'))) {
+
+                alert('Enter the number of salary');
+
+                return false;
+            }
+
+
+
+
+
+            var ID = 0;
+            ID = (App.Reg.FIXTURES.length) + 1;
+
+
+            var fullname = this.get('fullname');
+            var userid = this.get('userid');
+            var desgnation = this.get('desgnation');
+            var salary = this.get('salary');
+            var gross = salary * 0.35;
+            var pf = gross * 0.12;
+
+            var reg = this.store.createRecord('reg', {
+                id: ID,
+                fullname: fullname,
+                userid: userid,
+                desgnation: desgnation,
+                salary: salary,
+                pf: pf,
+                gross: gross,
+                isActive: true
+
+
+            });
+            console.log(fullname);
+            // Clear the "New Todo" text field
+            this.set('fullname', '');
+            this.set('userid', '');
+            this.set('desgnation', '');
+            this.set('salary', '');
+            this.set('pf', '');
+            this.set('gross', '');
+            // Save the new model
+
+            reg.save();
+
+
+
+
+
+            this.transitionTo('comfirmation');
+
+
+
+        }
+
+    },
+});
+
+
+
+
+App.ComfirmationController = Ember.ArrayController.extend({
+
+    actions: {
+
+    }
+
+
+});
+
+
+App.InformationController = Ember.ObjectController.extend({
+    actions: {
+        informationAction: function() {
+
+            this.transitionTo('index');
+
+        }
+    },
+
+
+
+});
+App.EditController = Ember.ObjectController.extend({
+
+
+
+    actions: {
+        update: function() {
+
+            if (this.get('fullname').length == 0) {
+
+                alert('Enter the value of fullname');
+                return false;
+
+            } else if ((this.get('fullname').length < 3)) {
+
+                alert('Enter the value more than 3 charcter of fullname');
+
+
+                return false;
+            } else if ($.isNumeric(this.get('fullname'))) {
+
+
+                alert('Enter the charcter of fullname');
+
+                return false;
+            } else if (this.get('userid').length == 0) {
+
+                alert('Enter the number of userid');
+                return false;
+            } else if ((this.get('userid').length < 1)) {
+
+                alert('Enter the value more than 2 number of userid');
+
+                return false;
+            } else if (!$.isNumeric(this.get('userid'))) {
+
+                alert('Enter the number in userid');
+
+                return false;
+            } else if (this.get('desgnation').length == 0) {
+
+                alert('Enter the value of designation');
+                return false;
+
+            } else if ((this.get('desgnation').length < 3)) {
+
+                alert('Enter the value more than 3 charcter of designation');
+                return false;
+            } else if ($.isNumeric(this.get('desgnation'))) {
+
+
+                alert('Enter the charcter of desgnation');
+
+                return false;
+            } else if (this.get('salary').length == 0) {
+
+                alert('Enter the number of salary');
+                return false;
+            } else if ((this.get('salary').length < 2)) {
+
+                alert('Enter the value more than 2 number of salary');
+                return false;
+
+            } else if (!$.isNumeric(this.get('salary'))) {
+
+                alert('Enter the number of salary');
+
+                return false;
+            }
+
+
+
+
+
+
+            var fullname = this.get('fullname');
+            var userid = this.get('userid');
+            var desgnation = this.get('desgnation');
+            var salary = this.get('salary');
+            var gross = salary * 0.35;
+            var pf = gross * 0.12;
+
+
+            this.set('fullname', fullname);
+            this.set('userid', userid);
+            this.set('desgnation', desgnation);
+            this.set('salary', salary);
+            this.set('pf', pf);
+            this.set('gross', gross);
+
+
+
+
+
+            this.transitionTo('comfirmation');
+
+
+
+
+        }
+    },
+
+
+
+});
+
+
+App.Router.map(function() {
+    this.resource('comfirmation', { path: '/comfirmation' }),
+     this.resource('information', { path: '/information/:id' }),
+      this.resource('edit', { path: '/edit/:id' })
+
+
+});
+
+App.IndexRoute = Ember.Route.extend({
+ model:function()
+  {
+    return this.store.find('reg');
+  }
+
+});
+
+App.ComfirmationRoute = Ember.Route.extend({
+	model:function()
+  {
+    return this.store.find('reg');
+  }
+
+});
+
+App.InformationRoute = Ember.Route.extend({
+	model:function(params)
+  {
+    return this.store.find('reg',params.id);
+  }
+
+});
+App.EditRoute = Ember.Route.extend({
+  model:function(params)
+  {
+    return this.store.find('reg',params.id);
+  }
+
+});
+
+
+
+
+
+App.Reg = DS.Model.extend({
+    fullname:DS.attr('string'),
+    userid:DS.attr('string'),
+    desgnation:DS.attr('string'),
+   salary:DS.attr('string'),
+    pf:DS.attr('string'),
+    gross:DS.attr('string'),
+    isActive:DS.attr('boolean')
+});
+
+App.Reg.FIXTURES = [{
+        id: 1,
+        fullname:"kiran",
+        userid: "670",
+        desgnation: "java",
+        salary: "5000",
+        pf: "100",
+        gross:"400",
+        isActive: true
+
+    }
+
+]
+
+
+
