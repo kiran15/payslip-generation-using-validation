@@ -1,0 +1,44 @@
+<h1>PLAN</h1>
+<link rel="stylesheet" href="plan.css">
+    <div ng-controller="myCtrl1">
+        
+        <div class="form-group">
+        <body >
+              <form name="exampleForm" class="elegant-aero">
+                    <label>First Name:</label>
+                        <input type="text" ng-pattern ="/^[a-zA-Z\s]*$/"  name="userFirstName" ng-model="user.name" required />
+                        <div ng-messages="exampleForm.userFirstName.$error">
+                          <div ng-message="required">This field is required</div>
+                        </div>
+                    <label>Number:</label>
+                     <input type="number" name="userNumber" ng-model="user.number" required />
+                    <div ng-messages="exampleForm.userNumber.$error">
+                      <div ng-message="required">This field is required</div>
+                     <span>{{numbererrMessage}}</span>
+                    </div>
+        
+                    <label for="endDate" class="control-label">Start Date:</label>
+                    <div>
+                        <input type="date" class="form-control"  ui-date-format="mm/dd/yyyy"
+                               id="startDate" ng-model="startDate" />
+                    </div>
+
+                  <label for="text" class="control-label">End Date:</label>
+                        <div>
+                            <input type="date" class="form-control"  ui-date-format="mm/dd/yyyy"
+                                   id="endDate" ng-model="endDate" 
+                                    ng-change='checkErr(startDate,endDate)' />
+                        </div>
+                            <span>{{errMessage}}</span>
+                  
+                   </form>
+               <button class='update' ng-click="update(user)">save</button>
+             </body>
+         </div>
+             
+    
+        
+</div>
+
+   
+
